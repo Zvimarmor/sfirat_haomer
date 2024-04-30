@@ -7,7 +7,7 @@ sfirot = ["חסד", "גבורה", "תפארת", "נצח", "הוד", "יסוד", 
 lel_haseder_date = datetime.datetime(2024, 4, 23)
 
 def get_sunset_time():
-    sunset_time = datetime.datetime.combine(datetime.date.today(), datetime.time(14, 15))
+    sunset_time = datetime.datetime.combine(datetime.date.today(), datetime.time(19, 30))
     return sunset_time
 
 def what_day_is_it():
@@ -75,11 +75,10 @@ def main():
         today = what_day_is_it()
         message = build_message_for_user(today, user_Nosach)
         send_Whatsapp_messege(get_display(message), user_phone_number)
-        time.sleep(10)
+        time.sleep(24*60*60)
     print(get_display("סיימתי לשלוח תזכורות!"))
     return
     
-
 if __name__ == "__main__":
     main()   
 
