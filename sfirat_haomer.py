@@ -82,7 +82,7 @@ def main():
         today = what_day_is_it(user_location)
         message = build_message_for_user(today, user_Nosach)
         send_Whatsapp_messege(get_display(message), user_phone_number)
-        time.sleep(10)
+        time.sleep(24*60*60)
     print(get_display("סיימתי לשלוח תזכורות!"))
     return
     
