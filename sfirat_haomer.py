@@ -19,10 +19,11 @@ def what_day_is_it(location = "Jerusalem"):
     now = datetime.datetime.now()
     sunset_time = get_sunset_time(location)
 
-    if now < sunset_time:
+    if now.hour < sunset_time.hour or (now.hour == sunset_time.hour and now.minute < sunset_time.minute):
         answer = now - lel_haseder_date
     else:
         answer = now - lel_haseder_date + datetime.timedelta(days=1)
+
     answer = answer.days
     if answer < 1:
         return "Invalid day"
@@ -75,10 +76,10 @@ def main():
     user_phone_number = input(get_display("מה מספר הפלאפון שלך לשליחת התזכורת( כולל קידומת מדינה)?"))
     user_Nosach = input(get_display("מה נוסח התפילה שלך?"))
     user_location = input(get_display("מה מקום מגוריך?"))
-    today = what_day_is_it()
+    today = what_day_is_it(user_location)
     message = build_message_for_user(today, user_Nosach)
     while today <= 49:
-        today = what_day_is_it()
+        today = what_day_is_it(user_location)
         message = build_message_for_user(today, user_Nosach)
         send_Whatsapp_messege(get_display(message), user_phone_number)
         time.sleep(10)
