@@ -1,4 +1,6 @@
 from bidi.algorithm import get_display
+from astral.sun import sun
+from astral import LocationInfo
 import pywhatkit as pywhatkit
 import datetime
 import time
@@ -6,13 +8,16 @@ import time
 sfirot = ["חסד", "גבורה", "תפארת", "נצח", "הוד", "יסוד", "מלכות"]
 lel_haseder_date = datetime.datetime(2024, 4, 23)
 
-def get_sunset_time():
-    sunset_time = datetime.datetime.combine(datetime.date.today(), datetime.time(19, 30))
+def get_sunset_time(location = "Jerusalem"):
+    location = LocationInfo(location, "Israel", "Asia/Jerusalem", "31.768318", "35.213711")
+    today = datetime.datetime.now()
+    s = sun(location.observer, date=today)
+    sunset_time = s['sunset'] + datetime.timedelta(hours=3)
     return sunset_time
 
-def what_day_is_it():
+def what_day_is_it(location = "Jerusalem"):
     now = datetime.datetime.now()
-    sunset_time = get_sunset_time()
+    sunset_time = get_sunset_time(location)
 
     if now < sunset_time:
         answer = now - lel_haseder_date
@@ -53,7 +58,7 @@ def return_sfirat_haomer_from_user():
     print(today)
 
 def build_message_for_user(today, Nosach = "Sfard"):
-    message = get_display("היי! זהו תזכורת לספירת העומר היומית שלך!" + "\n")
+    message = get_display("היי! זהו תזכורת לספירת העומר היומית שלך!" + "\n" + "\n")
     message += get_display("ברוך אתה ה' אלוהינו מלך העולם, אשר קדשנו במצוותיו וציוונו על ספירת העומר." + "\n")
     message += str(sfirat_haomer(today)) + "\n"
     return message
@@ -69,17 +74,18 @@ def send_Whatsapp_messege(message, phone_number = "+972534600460"):
 def main():
     user_phone_number = input(get_display("מה מספר הפלאפון שלך לשליחת התזכורת( כולל קידומת מדינה)?"))
     user_Nosach = input(get_display("מה נוסח התפילה שלך?"))
+    user_location = input(get_display("מה מקום מגוריך?"))
     today = what_day_is_it()
     message = build_message_for_user(today, user_Nosach)
     while today <= 49:
         today = what_day_is_it()
         message = build_message_for_user(today, user_Nosach)
         send_Whatsapp_messege(get_display(message), user_phone_number)
-        time.sleep(24*60*60)
+        time.sleep(10)
     print(get_display("סיימתי לשלוח תזכורות!"))
     return
     
 if __name__ == "__main__":
-    main()   
+    main()  
 
 
