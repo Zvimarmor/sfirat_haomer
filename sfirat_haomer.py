@@ -72,7 +72,7 @@ def return_sfirat_haomer_from_user():
 
 # Function to build message for user
 def build_message_for_user(today, Nosach = "Sfard"):
-    message = get_display("היי! זהו תזכורת לספירת העומר היומית שלך!" + "\n" + "\n")
+    message = get_display("היי! זו היא תזכורת לספירת העומר היומית שלך!" + "\n" + "\n")
     message += get_display("ברוך אתה ה' אלוהינו מלך העולם, אשר קדשנו במצוותיו וציוונו על ספירת העומר." + "\n")
     message += str(sfirat_haomer(today)) + "\n"
     return message
@@ -107,7 +107,7 @@ def get_Nosach():
     while True:
         Nosach = input(get_display("מה נוסח התפילה שלך?"))
 
-        if Nosach not in ["אשכנז", "ספרד", "עדות המזרח"]:
+        if Nosach not in ["אשכנז", "ספרד", "עדות המזרח", "Ashkenaz", "Sfard", "Edot Hamizrach", ""]:
             print(get_display("הנוסח שהכנסת אינו תקין. אנא הכנס נוסח תקין."))
             continue
 
