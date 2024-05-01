@@ -64,18 +64,54 @@ def build_message_for_user(today, Nosach = "Sfard"):
     message += str(sfirat_haomer(today)) + "\n"
     return message
 
-
-def send_Whatsapp_messege(message, phone_number = "+972534600460"):
+def send_Whatsapp_messege(message, phone_number):
     now = datetime.datetime.now()
     hours = now.hour
     minutes = now.minute + 1
     print("the message will be sent at: " + str(hours) + ":" + str(minutes))
     pywhatkit.sendwhatmsg(phone_number, message, hours, minutes+1)
+    return
+
+def get_phone_number():
+    phone_number = input(get_display("מה מספר הפלאפון שלך לשליחת התזכורת?"))
+    if phone_number[0] != "0" or phone_number[1] != "5":
+        input(get_display("המספר שהכנסת אינו תקין. אנא הכנס מספר פלאפון תקין."))
+    if len(phone_number) != 10:
+        input(get_display("המספר שהכנסת אינו תקין. אנא הכנס מספר פלאפון תקין."))
+    return phone_number
+
+def get_Nosach():
+    Nosach = input(get_display("מה נוסח התפילה שלך?"))
+    if Nosach not in ["אשכנז", "ספרד", "עדות המזרח"]:
+        input(get_display("הנוסח שהכנסת אינו תקין. אנא הכנס נוסח תקין."))
+    if Nosach == "":
+        Nosach = "Sfard"
+    if Nosach == "אשכנז":
+        Nosach = "Ashkenaz"
+    if Nosach == "ספרד":
+        Nosach = "Sfard"
+    if Nosach == "עדות המזרח":
+        Nosach = "Edot Hamizrach"
+    return Nosach
+
+def get_location():
+    location = input(get_display("מה מקום מגוריך?"))
+    if location == "":
+        location = "Jerusalem"
+    if location == "ירושלים":
+        location = "Jerusalem"
+    if location == "תל אביב":
+        location = "Tel Aviv"
+    if location == "חיפה":
+        location = "Haifa"
+    if location == "באר שבע":
+        location = "Beer Sheva"
+    return location
 
 def main():
-    user_phone_number = input(get_display("מה מספר הפלאפון שלך לשליחת התזכורת( כולל קידומת מדינה)?"))
-    user_Nosach = input(get_display("מה נוסח התפילה שלך?"))
-    user_location = input(get_display("מה מקום מגוריך?"))
+    user_phone_number = get_phone_number()
+    user_Nosach = get_Nosach()
+    user_location = get_location()
     today = what_day_is_it(user_location)
     message = build_message_for_user(today, user_Nosach)
     while today <= 49:
