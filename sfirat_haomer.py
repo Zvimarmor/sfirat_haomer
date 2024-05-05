@@ -5,7 +5,7 @@ import pywhatkit as pywhatkit
 import datetime
 import time
 
-# List of Sefirot
+# List of the Sfirot
 sfirot = ["חסד", "גבורה", "תפארת", "נצח", "הוד", "יסוד", "מלכות"]
 
 # Date of the first day of Passover
