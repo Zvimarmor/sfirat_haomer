@@ -2,8 +2,8 @@ from bidi.algorithm import get_display
 from astral.sun import sun
 from astral import LocationInfo
 import pywhatkit as pywhatkit
-import datetime
 import time
+import datetime
 
 # List of the Sfirot
 sfirot = ["חסד", "גבורה", "תפארת", "נצח", "הוד", "יסוד", "מלכות"]
@@ -78,10 +78,14 @@ def build_message_for_user(today, Nosach = "Sfard"):
     return message
 
 # Function to send WhatsApp message
-def send_Whatsapp_messege(message, phone_number):
+def send_Whatsapp_messege(message, phone_number, hour_to_send = (0,0)):
     now = datetime.datetime.now()
-    hours = now.hour
-    minutes = now.minute + 1
+    if hour_to_send == (0,0):
+        hours = now.hour
+        minutes = now.minute + 1
+    else:
+        hours = hour_to_send[0]
+        minutes = hour_to_send[1]
     print("the message will be sent at: " + str(hours) + ":" + str(minutes))
     pywhatkit.sendwhatmsg(phone_number, message, hours, minutes+1)
     return
@@ -101,7 +105,28 @@ def get_phone_number():
         phone_number = "+972" + phone_number[1:]
         return phone_number
 
-
+def get_hour_to_send():
+        while True:
+            user_input = input(get_display("באיזה שעה לשלוח את ההודעה? (בפורמט 4 ספרות)"))
+            if len(user_input) != 4:
+                print(get_display("השעה שהכנסת אינה תקינה. אנא הכנס שעה תקינה."))
+                continue
+            hour = user_input[:2]
+            minute = user_input[2:]
+            if len(hour) != 2:
+                print(get_display("השעה שהכנסת אינה תקינה. אנא הכנס שעה תקינה."))
+                continue
+            if int(hour) < 0 or int(hour) > 23:
+                print(get_display("השעה שהכנסת אינה תקינה. אנא הכנס שעה תקינה."))
+                continue
+            if len(minute) != 2:
+                print(get_display("מספר הדקות שהכנסת אינו תקין. אנא הכנס מספר תקין"))
+                continue
+            if int(minute) < 0 or int(minute) > 59:
+                print(get_display("מספר הדקות שהכנסת אינו תקין. אנא הכנס מספר תקין"))
+                continue
+            return (int(hour), int(minute))
+        
 # Function to get user's prayer version (Nosach)
 def get_Nosach():
     while True:
@@ -148,6 +173,7 @@ def main():
     user_phone_number = get_phone_number()
     user_Nosach = get_Nosach()
     user_location = get_location()
+    user_hour = get_hour_to_send()
     
     # Get current day of the Omer
     today = what_day_is_it(user_location)
@@ -159,7 +185,7 @@ def main():
     while today <= 49:
         today = what_day_is_it(user_location)
         message = build_message_for_user(today, user_Nosach)
-        send_Whatsapp_messege(get_display(message), user_phone_number)
+        send_Whatsapp_messege(get_display(message), user_phone_number, user_hour)
         time.sleep(24*60*60)  # Wait for a day
     print(get_display("סיימתי לשלוח תזכורות!"))
     return
