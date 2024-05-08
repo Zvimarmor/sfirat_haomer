@@ -88,6 +88,7 @@ def send_Whatsapp_messege(message, phone_number, hour_to_send = (0,0)):
         minutes = hour_to_send[1]
     print("the message will be sent at: " + str(hours) + ":" + str(minutes))
     pywhatkit.sendwhatmsg(phone_number, message, hours, minutes+1)
+    print(get_display("ההודעה נשלחה בהצלחה!"))
     return
 
 # Function to get user's phone number
